@@ -1,0 +1,51 @@
+﻿<Window x:Class="CSVIndexerGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CSVIndexerGUI"
+        mc:Ignorable="d"
+        SizeToContent="WidthAndHeight"
+        d:DesignHeight="655"
+        d:DesignWidth="960"
+        Title="CSVIndexerGUI" Height="655" Width="960" ResizeMode="CanMinimize">
+    <Grid HorizontalAlignment="Center" Width="960">
+        <Button x:Name="Button_Search" Content="Search Files" HorizontalAlignment="Left" Margin="19,579,0,0" VerticalAlignment="Top" Height="43" Width="140" RenderTransformOrigin="0.516,0.576" Click="Button_Search_Click"/>
+        <TextBox x:Name="TextBox_IndexingDirectory" Height="20" Margin="19,97,228,0" VerticalAlignment="Top" TextWrapping="NoWrap" AcceptsReturn="False" MaxLines="1" TextChanged="TextBox_IndexingDirectory_TextChanged"/>
+        <ComboBox x:Name="ComboBox_MethodSelection" ToolTip="Hashing algorithm used when indexing new .csv files - keep this consistent when running the program" SelectedIndex="0" Margin="698,274,92,342" AutomationProperties.IsOffscreenBehavior="Onscreen" SelectionChanged="ComboBox_MethodSelection_SelectionChanged"/>
+        <CheckBox x:Name="CheckBox_RenameFiles" Content="Rename files" ToolTip="Removes 'Root Directory' from the output filename. Otherwise files are copied without renaming them" Margin="698,336,47,270" Checked="CheckBox_RenameFiles_Checked" Unchecked="CheckBox_RenameFiles_Checked" />
+        <Label Content="Hashing Algorithm:" Margin="698,240,92,370"/>
+        <CheckBox x:Name="CheckBox_RemoveNegatives" Content="Remove negative entries" ToolTip="Removes negative lines from .csv files" Margin="698,356,47,243" Checked="CheckBox_RemoveNegatives_Checked" Unchecked="CheckBox_RemoveNegatives_Checked"/>
+        <CheckBox x:Name="CheckBox_RemoveDuplicates" Content="Remove duplicate entries" ToolTip="Removes duplicate lines from .csv files" Margin="698,378,47,221" Checked="CheckBox_RemoveDuplicates_Checked" Unchecked="CheckBox_RemoveDuplicates_Checked"/>
+        <CheckBox x:Name="CheckBox_CheckHash" Content="Check Hash for Duplicates" ToolTip="Check Database before adding .csv files - duplicates are ignored" Margin="698,398,47,200" Checked="CheckBox_CheckHash_Checked" Unchecked="CheckBox_CheckHash_Checked" />
+        <CheckBox x:Name="CheckBox_ForceRebuild" Content="Force Rebuild Index" ToolTip="Ignore existing metadata and reindex all .csv files" Margin="698,419,47,181" Checked="CheckBox_ForceRebuild_Checked" Unchecked="CheckBox_ForceRebuild_Checked"/>
+        <DatePicker x:Name="DatePicker_StartDate" ToolTip="Earliest date recorded in .csv" HorizontalAlignment="Left" Margin="90,277,0,0" VerticalAlignment="Top" Width="140" Height="24"/>
+        <Button Name="Button_SearchIndexDirectory" ToolTip="Set the Directory containing the .csv files" Content="Search..." Margin="771,91,21,516" Height="32" Click="Button_SearchIndexDirectory_Click"/>
+        <DatePicker x:Name="DatePicker_EndDate" ToolTip="Latest Date recorded in .csv" HorizontalAlignment="Left" Margin="322,277,0,0" VerticalAlignment="Top" Width="140" Height="24"/>
+        <TextBox x:Name="TextBox_Name" ToolTip="Name of .csv (case insensitive)" AcceptsReturn="False" TextWrapping="NoWrap" Margin="322,314,455,304" Height="21" TextChanged="TextBox_Name_TextChanged"/>
+        <TextBox x:Name="TextBox_Content" ToolTip="Expected content of the .csv - e.g. 'electricity'" AcceptsReturn="False" TextWrapping="NoWrap" Margin="322,353,455,265" Height="21" TextChanged="TextBox_Content_TextChanged"/>
+        <TextBox x:Name="TextBox_Description" ToolTip="Description of .csv - e.g. 'heat pump' (case insensitive)" TextWrapping="NoWrap" AcceptsReturn="False" Margin="322,393,455,225" TextChanged="TextBox_Description_TextChanged" Height="21"/>
+        <TextBox x:Name="TextBox_Tags" ToolTip="Box for Tags - separate multiple Tags using ; Whitespaces are removed during parsing" TextWrapping="NoWrap" AcceptsReturn="False" Margin="322,433,455,185" Height="21" TextChanged="TextBox_Tags_TextChanged"/>
+        <TextBlock TextWrapping="Wrap" Margin="90,244,730,370"><Run Text="Start Date"/><Run Language="de-de" Text=":"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="322,244,514,376"><Run Language="de-de" Text="End Date:"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="22,314,875,304"><Run Language="de-de" Text="Name:"/></TextBlock>
+        <ComboBox x:Name="ComboBox_PickName" HorizontalAlignment="Left" Margin="90,314,0,0" VerticalAlignment="Top" Width="140" Height="21" SelectionChanged="ComboBox_PickName_SelectionChanged" SelectedIndex="0" />
+        <TextBlock TextWrapping="Wrap" Margin="22,353,875,266"><Run Language="de-de" Text="Content"/><Run Text=":"/></TextBlock>
+        <ComboBox x:Name="ComboBox_PickContent" HorizontalAlignment="Left" Margin="90,353,0,0" VerticalAlignment="Top" Width="140" Height="21" SelectionChanged="ComboBox_PickContent_SelectionChanged" SelectedIndex="0" />
+        <TextBlock TextWrapping="Wrap" Margin="22,433,875,168"><Run Language="de-de" Text="Tags"/><Run Text=":"/></TextBlock>
+        <ComboBox x:Name="ComboBox_PickTags" HorizontalAlignment="Left" Margin="90,433,0,0" VerticalAlignment="Top" Width="140" Height="21" SelectionChanged="ComboBox_PickTags_SelectionChanged" SelectedIndex="0" />
+        <TextBlock TextWrapping="Wrap" Margin="22,393,875,220" RenderTransformOrigin="0.095,0.654"><Run Text="Desc"/><Run Language="de-de" Text="."/><Run Text=":"/></TextBlock>
+        <ComboBox x:Name="ComboBox_PickDescription" HorizontalAlignment="Left" Margin="90,393,0,0" VerticalAlignment="Top" Width="140" Height="21" SelectionChanged="ComboBox_PickDescription_SelectionChanged" SelectedIndex="0" />
+        <TextBox x:Name="TextBox_WorkingDirectory" TextWrapping="NoWrap" AcceptsReturn="False" Height="20" Margin="19,44,228,0" VerticalAlignment="Top" MaxLines="1" TextChanged="TextBox_WorkingDirectory_TextChanged"/>
+        <Button x:Name="Button_SearchWorkingDirectory" ToolTip="Set the Directory for output and Database" Content="Search..." Margin="771,38,21,569" Height="32" Click="Button_SearchWorkingDirectory_Click"/>
+        <TextBlock x:Name="TextBlock_DirectoryToIndex" TextWrapping="Wrap" Margin="19,74,789,542"><Run Language="de-de" Text="Directory to Index"/><Run Text=":"/></TextBlock>
+        <TextBlock TextWrapping="Wrap" Margin="22,19,789,591"><Run Language="de-de" Text="Working Directory"/><Run Text=":"/></TextBlock>
+        <Button x:Name="Button_Index" Content="Index Directory" HorizontalAlignment="Left" Margin="799,579,0,0" VerticalAlignment="Top" Height="43" Width="140" RenderTransformOrigin="0.25,0.545" Click="Button_Index_Click"/>
+        <TextBox x:Name="TextBox_RootDirectory" TextWrapping="NoWrap" AcceptsReturn="False" ToolTip="Top Level Directory of Indexed Directory - this string is removed from the output filename" Height="21" Margin="19,162,390,0" VerticalAlignment="Top" MaxLines="1" TextChanged="TextBox_RootDirectory_TextChanged"/>
+        <TextBlock TextWrapping="Wrap" Margin="19,139,767,462"><Run Text="Root Directory"/><Run Language="de-de" Text=":"/></TextBlock>
+        <CheckBox x:Name="CheckBox_SearchMetaData" Content="Search for Metadata" ToolTip="Search for 'metadata.json' and 'filename'.json to extract .csv metadata - otherwise file info is used" Margin="698,314,47,303" Checked="CheckBox_SearchMetaData_Checked" Unchecked="CheckBox_SearchMetaData_Checked" />
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="30" Margin="41,509,0,0" VerticalAlignment="Top" Width="881"/>
+        <TextBlock x:Name="TextBlock_Progress" HorizontalAlignment="Left" Margin="41,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="183"/>
+        <ComboBox x:Name="ComboBox_WorkingMode" ToolTip="Select single file or bulk mode" SelectedIndex="0" Margin="771,161,21,455" AutomationProperties.IsOffscreenBehavior="Onscreen" SelectionChanged="ComboBox_WorkingMode_SelectionChanged"/>
+    </Grid>
+</Window>
