@@ -24,7 +24,7 @@ CSVIndexerGUI is ideal for organizations and individuals who need to manage and 
 ## Installation
 
 To use this tool:
-1. Download the latest Windows (standalone) release from the [Releases](https://github.com/yourusername/CSVIndexerGUI/releases) page.
+1. Download the latest Windows (standalone) release from the [Releases](https://github.com/SignorCC/CSVIndexerGUI/releases) page.
 2. Alternatively, build it for the .NET Framework using Visual Studio 2022.
 
 **Note for Linux users:** Due to WPF constraints, WINE is necessary for using the tool on Linux.
