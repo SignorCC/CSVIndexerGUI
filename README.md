@@ -96,11 +96,11 @@ This format is expected by the tool when "Remove Duplicates" or "Remove Negative
 
 ![Main Interface](screenshots/main_interface.png)
 
-*Caption: Main interface of CSVIndexerGUI showing indexing options*
+*Main interface of CSVIndexerGUI showing indexing options*
 
 ![Main Interface](screenshots/search_results.png)
 
-*Caption: Search results window with export functionality*
+*Search results window with export functionality*
 
 ## Inner Workings
 
