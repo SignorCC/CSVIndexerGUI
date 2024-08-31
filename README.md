@@ -51,7 +51,7 @@ The tool offers two indexing modes:
 **Additional Indexing Options:**
 - "Ignore Duplicate Hashes": Adds files with duplicate hashes under the same hash key in the table.
 - "Force Rebuild Index": Drops the entire list of a hash in question if a file with the same hash is indexed.
-- If no `metadata.json` is found in directory mode, the tool extracts available metadata from the file info.
+- If no `metadata.json` or `filename.json` is found in directory mode, the tool extracts available metadata from the file info.
 
 ### Searching
 
