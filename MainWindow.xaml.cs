@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -390,18 +391,18 @@ namespace CSVIndexerGUI
             .SelectMany(kvp => kvp.Value)
             .Where(file =>
                 (string.IsNullOrEmpty(TextBox_Name_Selection) ||
-                 (ComboBox_PickName_Selection == "Include" && file.metadata["Name"].Contains(TextBox_Name_Selection)) ||
-                 (ComboBox_PickName_Selection == "Exclude" && !file.metadata["Name"].Contains(TextBox_Name_Selection))) &&
+                 (ComboBox_PickName_Selection == "Include" && Regex.IsMatch(file.metadata["Name"], Regex.Escape(TextBox_Name_Selection), RegexOptions.IgnoreCase)) ||
+                 (ComboBox_PickName_Selection == "Exclude" && !Regex.IsMatch(file.metadata["Name"], Regex.Escape(TextBox_Name_Selection), RegexOptions.IgnoreCase))) &&
                 (string.IsNullOrEmpty(TextBox_Content_Selection) ||
-                 (ComboBox_PickContent_Selection == "Include" && file.metadata["Content"].Contains(TextBox_Content_Selection)) ||
-                 (ComboBox_PickContent_Selection == "Exclude" && !file.metadata["Content"].Contains(TextBox_Content_Selection))) &&
+                 (ComboBox_PickContent_Selection == "Include" && Regex.IsMatch(file.metadata["Content"], Regex.Escape(TextBox_Content_Selection), RegexOptions.IgnoreCase)) ||
+                 (ComboBox_PickContent_Selection == "Exclude" && !Regex.IsMatch(file.metadata["Content"], Regex.Escape(TextBox_Content_Selection), RegexOptions.IgnoreCase))) &&
                 (string.IsNullOrEmpty(TextBox_Description_Selection) ||
-                 (ComboBox_PickDescription_Selection == "Include" && file.metadata["Description"].Contains(TextBox_Description_Selection)) ||
-                 (ComboBox_PickDescription_Selection == "Exclude" && !file.metadata["Description"].Contains(TextBox_Description_Selection))) &&
+                 (ComboBox_PickDescription_Selection == "Include" && Regex.IsMatch(file.metadata["Description"], Regex.Escape(TextBox_Description_Selection), RegexOptions.IgnoreCase)) ||
+                 (ComboBox_PickDescription_Selection == "Exclude" && !Regex.IsMatch(file.metadata["Description"], Regex.Escape(TextBox_Description_Selection), RegexOptions.IgnoreCase))) &&
                 (string.IsNullOrEmpty(TextBox_Tags_Selection) ||
-                 (ComboBox_PickTags_Selection == "Match Any" && TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).Any(tag => file.metadata["Tags"].Contains(tag))) ||
-                 (ComboBox_PickTags_Selection == "Match All" && TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).All(tag => file.metadata["Tags"].Contains(tag))) ||
-                 (ComboBox_PickTags_Selection == "Match None" && !TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).Any(tag => file.metadata["Tags"].Contains(tag)))) &&
+                 (ComboBox_PickTags_Selection == "Match Any" && TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).Any(tag => Regex.IsMatch(file.metadata["Tags"], Regex.Escape(tag), RegexOptions.IgnoreCase))) ||
+                 (ComboBox_PickTags_Selection == "Match All" && TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).All(tag => Regex.IsMatch(file.metadata["Tags"], Regex.Escape(tag), RegexOptions.IgnoreCase))) ||
+                 (ComboBox_PickTags_Selection == "Match None" && !TextBox_Tags_Selection.Split(';', StringSplitOptions.RemoveEmptyEntries).Any(tag => Regex.IsMatch(file.metadata["Tags"], Regex.Escape(tag), RegexOptions.IgnoreCase)))) &&
                 (string.IsNullOrEmpty(startDate) || string.Compare(file.metadata["StartDate"], startDate) >= 0) &&
                 (string.IsNullOrEmpty(endDate) || string.Compare(file.metadata["EndDate"], endDate) <= 0)
             )
