@@ -46,7 +46,8 @@ namespace CSVIndexerGUI
         public bool CheckBox_ForceRebuild_Selection = false;
         public bool CheckBox_CheckHash_Selection = true;  
         public bool abort = false;
-        
+        public bool InitDone = false;
+
 
         public MainWindow()
         {
@@ -60,6 +61,22 @@ namespace CSVIndexerGUI
             var culture = new System.Globalization.CultureInfo("en-DE");
             System.Threading.Thread.CurrentThread.CurrentCulture = culture;
             System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
+            // Read Filepaths from Disk (currently unused)
+            if (File.Exists(Path.Combine(TextBox_WorkingDirectory_Selection, "config.json")))
+            {
+                string json = File.ReadAllText(Path.Combine(TextBox_WorkingDirectory_Selection, "config.json"));
+                var config = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+
+                if (config.TryGetValue("WorkingDirectory", out string workingDirectory))
+                    TextBox_WorkingDirectory_Selection = workingDirectory;
+
+                if (config.TryGetValue("IndexingDirectory", out string indexingDirectory))
+                    TextBox_IndexingDirectory_Selection = indexingDirectory;
+
+                if (config.TryGetValue("RootDirectory", out string rootDirectory))
+                    TextBox_RootDirectory_Selection = rootDirectory;
+            }
 
             // Set paths in TextBoxes
             TextBox_WorkingDirectory.Text = TextBox_WorkingDirectory_Selection;
@@ -104,6 +121,28 @@ namespace CSVIndexerGUI
 
             // Read Allocation Table from Disk
             fileWorker.ReadTable(Path.Combine(TextBox_WorkingDirectory_Selection, "allocationTable.json"));
+
+            InitDone = true;
+
+        }
+
+        // Currently unused, might be removed in future versions
+        private void savePathsToDisk()
+        {
+            // Prevent overwriting file with initial values
+            if (!InitDone)
+                return;
+
+            // Save Filepaths to Disk
+            Dictionary<string, string> config = new Dictionary<string, string>
+            {
+                { "WorkingDirectory", TextBox_WorkingDirectory_Selection },
+                { "IndexingDirectory", TextBox_IndexingDirectory_Selection },
+                { "RootDirectory", TextBox_RootDirectory_Selection }
+            };
+
+            string json = JsonConvert.SerializeObject(config, Formatting.Indented);
+            File.WriteAllText(Path.Combine(TextBox_WorkingDirectory_Selection, "config.json"), json);
         }
 
         private string OpenFileDialog(object sender, RoutedEventArgs e, string initialPath = "c:\\")
@@ -122,7 +161,6 @@ namespace CSVIndexerGUI
             
 
             return filePath;
-            
         }
 
         private string OpenFolderDialog(object sender, RoutedEventArgs e, string initialPath = "c:\\")
@@ -246,7 +284,9 @@ namespace CSVIndexerGUI
         {
             // Error handling before parsing string
             if (!string.IsNullOrEmpty(TextBox_WorkingDirectory.Text))
+            {
                 TextBox_WorkingDirectory_Selection = TextBox_WorkingDirectory.Text;
+            }
         }
 
         private void TextBox_IndexingDirectory_TextChanged(object sender, TextChangedEventArgs e)
@@ -267,7 +307,9 @@ namespace CSVIndexerGUI
         {
             // Error handling before parsing string
             if (!string.IsNullOrEmpty(TextBox_RootDirectory.Text))
+            {
                 TextBox_RootDirectory_Selection = TextBox_RootDirectory.Text;
+            }
         }
 
         private void TextBox_Name_TextChanged(object sender, TextChangedEventArgs e)
@@ -304,7 +346,7 @@ namespace CSVIndexerGUI
                 TextBox_WorkingDirectory.Text = newPath;
 
                 // Read Allocation Table from Disk
-                if(Path.Exists(TextBox_WorkingDirectory_Selection))
+                if (Path.Exists(TextBox_WorkingDirectory_Selection))
                     fileWorker.ReadTable(Path.Combine(TextBox_WorkingDirectory_Selection, "allocationTable.json"));
             }
 
@@ -429,19 +471,36 @@ namespace CSVIndexerGUI
             var scrollViewer = new ScrollViewer();
             var stackPanel = new StackPanel();
 
-            foreach (var file in results)
+            // If no results are found, display "No Results"
+            if (results.Count == 0)
             {
                 var textBox = new TextBox
                 {
-                    Text = file.ToString(),
+                    Text = "No Results found!",
                     Margin = new Thickness(5),
                     TextWrapping = TextWrapping.Wrap,
                     IsReadOnly = true,
-                    VerticalAlignment = VerticalAlignment.Top,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
                     BorderThickness = new Thickness(0)
                 };
                 stackPanel.Children.Add(textBox);
             }
+
+            else
+                foreach (var file in results)
+                {
+                    var textBox = new TextBox
+                    {
+                        Text = file.ToString(),
+                        Margin = new Thickness(5),
+                        TextWrapping = TextWrapping.Wrap,
+                        IsReadOnly = true,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        BorderThickness = new Thickness(0)
+                    };
+                    stackPanel.Children.Add(textBox);
+                }
 
             scrollViewer.Content = stackPanel;
             Grid.SetRow(scrollViewer, 0);
