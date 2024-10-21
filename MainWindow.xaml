@@ -45,7 +45,7 @@
         <TextBlock TextWrapping="Wrap" Margin="19,139,767,462"><Run Text="Root Directory"/><Run Language="de-de" Text=":"/></TextBlock>
         <CheckBox x:Name="CheckBox_SearchMetaData" Content="Search for Metadata" ToolTip="Search for 'metadata.json' and 'filename'.json to extract .csv metadata - otherwise file info is used" Margin="698,314,47,303" Checked="CheckBox_SearchMetaData_Checked" Unchecked="CheckBox_SearchMetaData_Checked" />
         <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="30" Margin="41,509,0,0" VerticalAlignment="Top" Width="881"/>
-        <TextBlock x:Name="TextBlock_Progress" HorizontalAlignment="Left" Margin="41,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="183"/>
+        <TextBlock x:Name="TextBlock_Progress" HorizontalAlignment="Left" Margin="41,488,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="881"/>
         <ComboBox x:Name="ComboBox_WorkingMode" ToolTip="Select single file or bulk mode" SelectedIndex="0" Margin="771,161,21,455" AutomationProperties.IsOffscreenBehavior="Onscreen" SelectionChanged="ComboBox_WorkingMode_SelectionChanged"/>
     </Grid>
 </Window>
